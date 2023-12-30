@@ -17,6 +17,22 @@ const routes = (handler) => [
       auth: 'emading_jwt'
     },
   },
+  {
+    method: 'PUT',
+    path: '/{id}/draft',
+    handler: handler.putArticleDraftHandler,
+    options: {
+      auth: 'emading_jwt'
+    },
+  },
+  {
+    method: 'GET',
+    path: '/admin',
+    handler: handler.getArticleByIdHandler,
+    options: {
+      auth: 'emading_jwt'
+    },
+  },
 ]
 
 module.exports = routes;

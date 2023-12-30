@@ -19,7 +19,7 @@ class UsersService {
       query.values,
     );
 
-    return result;
+    return result[0];
   }
 
   async addUser({ name, email, password }) {

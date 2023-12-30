@@ -10,7 +10,7 @@ class ArticlesService {
 
   async getArticles() {
     const query = {
-      text: `SELECT title, slug, description, image FROM articles`,
+      text: `SELECT title, slug, description, image FROM articles WHERE isDraft = 0`,
     }
 
     const [result, fields] = await this._pool.query(
@@ -77,6 +77,40 @@ class ArticlesService {
       query.text,
       query.values,
     );
+  }
+
+  // UpdateDraft
+  async updateisDraft({ isDraft, id_user, idArticle }) {
+    const updateIsDraft = isDraft === 0 ? 1 : 0;
+
+    const query = {
+      text: 'UPDATE `articles` SET isDraft = ? WHERE id = ?',
+      values: [updateIsDraft, idArticle],
+    };
+
+    await this._pool.query(
+      query.text,
+      query.values,
+    );
+  }
+
+  // List Article From Admin
+  async getArticlesById({ id_user }) {
+    const query = {
+      text: 'SELECT * FROM `article` INNER JOIN `articles` ON article.id_article = articles.id WHERE `id_user` = ?',
+      values: [id_user],
+    };
+
+    const [result, fields] = await this._pool.query(
+      query.text,
+      query.values,
+    );
+
+    if (!result.length > 0) {
+      throw new NotFoundError('Article tidak tersedia');
+    }
+
+    return result;
   }
 }
 
